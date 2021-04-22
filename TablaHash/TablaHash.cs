@@ -5,12 +5,12 @@ using System.Text;
 
 namespace TablaHash
 {
-    public class TablaHash<K,V>
+    public class TablaHash<K, V>
     {
         int largoTabla;
         int funcionHash(K llave)
         {
-            if(llave is String)
+            if (llave is String)
             {
                 byte[] bytes = Encoding.UTF8.GetBytes(llave.ToString());
                 long contador = 0;
@@ -34,20 +34,28 @@ namespace TablaHash
             }
         }
         internal Comparador<V> comparador;
-        public delegate int Comparador<V>(V a,V b);
+        public delegate int Comparador<v>(V a, string b);
         public void Add(K llave, V valor)
         {
             var hash = funcionHash(llave);
-            var llaveValor = Diccionario.Find(p => p.Llave.Equals(llave));//busca la posición en la que se va a agregar
+            var llaveValor = Diccionario.Find(p => p.Llave.Equals(hash));//busca la posición en la que se va a agregar
             llaveValor.Valor.Add(valor);
         }
-        public void Remove(K llave, V valor)
+        public void Remove(K llave, string Titulo)
         {
             var hash = funcionHash(llave);
-            var llaveValor = Diccionario.Find(p => p.Llave.Equals(llave));
+            var llaveValor = Diccionario.Find(p => p.Llave.Equals(hash));
             //busca la posición en la que se va a agregar
-            int posi=llaveValor.Valor.Find2(m => comparador(m, valor) == 0);
-            llaveValor.Valor.RemoveAt(posi);
+            int posicion = llaveValor.Valor.Find2(m => comparador(m, Titulo) == 0);
+            llaveValor.Valor.RemoveAt(posicion);
+        }
+        public V Remove2(K llave, string Titulo)
+        {
+            var hash = funcionHash(llave);
+            var llaveValor = Diccionario.Find(p => p.Llave.Equals(hash));
+            //busca la posición en la que se va a agregar
+            var I = llaveValor.Valor.Find(m => comparador(m, Titulo) == 0);
+            return I;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace LAB4_1203819_2530019.Models
     {
         public int Id { get; set; }
         [Required]
-        public string  Developer { get; set; }
+        public string Developer { get; set; }
         [Required]
         public string Titulo { get; set; }
         [Required]
@@ -24,9 +24,9 @@ namespace LAB4_1203819_2530019.Models
         public int Mes { get; set; }
         [Required]
         public int Año { get; set; }
-        public static int Compare_Titulo(Tarea x, Tarea y)
+        public static int Compare_Titulo(Tarea x, String y)
         {
-            int r = x.Titulo.CompareTo(y.Titulo);
+            int r = x.Titulo.CompareTo(y);
             return r;
         }
 

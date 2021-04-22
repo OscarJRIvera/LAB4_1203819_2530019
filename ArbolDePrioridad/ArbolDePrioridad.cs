@@ -36,7 +36,7 @@ namespace ArbolDePrioridad
                 root = new Nodo<T>();
                 root.Value = dato;
                 root.Left = new Nodo<T>();
-                root.Right= new Nodo<T>();
+                root.Right = new Nodo<T>();
             }
             else
             {
@@ -56,7 +56,8 @@ namespace ArbolDePrioridad
                 CurrentRoot.Left = new Nodo<T>();
                 CurrentRoot.Right = new Nodo<T>();
             }
-            else if (CurrentRoot.Left.Value != null && CurrentRoot.Right.Value != null) {
+            else if (CurrentRoot.Left.Value != null && CurrentRoot.Right.Value != null)
+            {
                 add2(dato, CurrentRoot.Left);
                 if (Comprobacion == false)
                 {
@@ -88,8 +89,8 @@ namespace ArbolDePrioridad
             {
                 Nodo<T> Temp = new Nodo<T>();
                 Temp.Value = CurrentRoot.Value;
-               
-                
+
+
                 if (CurrentRoot.Left.Value != null)
                 {
                     if (comparador.Invoke(CurrentRoot.Left.Value, CurrentRoot.Value) == -1)

@@ -1,6 +1,19 @@
-﻿<p>Seleccione que desea realizar</p>
+﻿@model LAB4_1203819_2530019.Models.Tarea
+<div style="color:green; position:center">
+    <dl class="row">
+        <dt class="col-sm-2">
+            <p>Develepor:</p>
+        </dt>
+        <dt class="col-sm-2">
+            @Html.DisplayFor(model => model.Developer)
+        </dt>
+    </dl>
+</div>
+<p>Seleccione que desea realizar</p>                                           
 
-@Html.ActionLink("!Ingresar nueva tarea!", "OptionList", new { id = 0 })
-
-@Html.ActionLink("!Consultar siguiente tarea!", "OptionList", new { id = 1 })
+<a style="color:red" asp-action="Create" class="btn btn-light btn-block" role="button">Agregar Tarea Pendiente</a>
+<hr/>
+<a style="color:red" asp-action="Consulta" class="btn btn-light btn-block" role="button">Consultar siguiente tarea pendiente</a>
+<hr/>
+<a style="color:red" asp-action="DeveloperName" class="btn btn-light btn-block" role="button">Cambiar de develepor</a>
 
