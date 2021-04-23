@@ -1,15 +1,31 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace DoubleLinkedListLibrary1
 {
-    public class DoubleLinkedList<T> : IEnumerable<T>
+    [Serializable]
+    public class DoubleLinkedList<T> : ICloneable, IEnumerable<T>
     {
-        Node<T> start;
-        Node<T> end;
-        int count;
-        int eleminados;
+        Node<T> start = new Node<T>();
+        Node<T> end = new Node<T>();
+        int count = 0;
+        int eleminados = 0;
+
+
+        public DoubleLinkedList<T> Clone()
+        {
+            return new DoubleLinkedList<T>(this);
+        }
+        object ICloneable.Clone()
+        {
+            return Clone();
+        }
+
+
         public DoubleLinkedList() //Esta es la funcion
         {
             start = null;
@@ -17,19 +33,29 @@ namespace DoubleLinkedListLibrary1
             count = 0;
             eleminados = 0;
         }
-        public DoubleLinkedList(Comparador<T> Funcomparador) 
+        public DoubleLinkedList(Comparador<T> Funcomparador)
         {
             start = null;
             end = null;
             count = 0;
             eleminados = 0;
-            this.comparador = Funcomparador; 
+            comparador = Funcomparador;
         }
+
+        public DoubleLinkedList(DoubleLinkedList<T> dl)
+        {
+            this.start = dl.start.Clone();
+            this.end = dl.end.Clone();
+            this.count = dl.count;
+            this.eleminados = dl.eleminados;
+            this.comparador = dl.comparador;
+        }
+
         internal Comparador<T> comparador;
         public delegate int Comparador<T>(T a, T b);
         bool IsEmpty()
         {
-            return count == 0;
+            return count - eleminados == 0;
         }
 
         public void Add(T dato)
@@ -56,21 +82,29 @@ namespace DoubleLinkedListLibrary1
         public void RemoveAt(int index)
         {
             Node<T> actual;
-            Node<T> anterior = null;
+            Node<T> anterior;
             actual = start;
-
             int i = 1;
-            while (actual != null && i < index - eleminados)
+            while (actual != null && i < index)
             {
                 anterior = actual;
                 actual = actual.next;
                 i++;
+
             }
             if (actual == start)
             {
-                start = start.next;
-                start.Behind = null;
-                eleminados++;
+                if (start.next == null)
+                {
+                    start = start.next;
+                    eleminados++;
+                }
+                else
+                {
+                    start = start.next;
+                    start.Behind = null;
+                    eleminados++;
+                }
             }
             else if (actual == end)
             {
@@ -80,10 +114,27 @@ namespace DoubleLinkedListLibrary1
             }
             else
             {
-                actual.next = actual.next.next;
-                actual.next.Behind = actual;
+                actual.Behind.next = actual.next;
+                actual.next.Behind = actual.Behind;
                 eleminados++;
             }
+        }
+        public T RemoveAt2(int index)
+        {
+            Node<T> actual;
+            Node<T> Valor = new Node<T>();
+            actual = start;
+
+            int i = 1;
+            while (actual != null && i < index)
+            {
+
+                actual = actual.next;
+                i++;
+            }
+            Valor.Value = actual.Value;
+            return Valor.Value;
+
         }
         public T GetbyIndex(int index)
         {
@@ -143,11 +194,24 @@ namespace DoubleLinkedListLibrary1
 
 
         }
+        public void replace(T value, int index)
+        {
+            Node<T> actual;
+            actual = start;
+            int i = 1;
+            while (actual != null && i < index)
+            {
+                actual = actual.next;
+                i++;
+            }
+            actual.Value = value;
+        }
         public T Find(Predicate<T> match)
         {
             Node<T> actual;
             actual = start;
             int i = 1;
+
             while (actual != null)
             {
                 if (match.Invoke(actual.Value)) //match es un delegado que verifica una condición
@@ -163,17 +227,16 @@ namespace DoubleLinkedListLibrary1
         {
             Node<T> actual;
             actual = start;
-            int i = 0;
-            while (actual != null)
+            int i = 1;
+
+            while (!match.Invoke(actual.Value))
             {
-                if (!match.Invoke(actual.Value)) //match es un delegado que verifica una condición
+                i++;
+                if (actual == null)
                 {
-                    
-                    i++;
+                    return 0;
                 }
                 actual = actual.next;
-
-
             }
             return i;
         }

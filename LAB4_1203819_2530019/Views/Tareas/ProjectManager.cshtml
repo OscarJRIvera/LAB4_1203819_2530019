@@ -1,0 +1,65 @@
+﻿@model IEnumerable<LAB4_1203819_2530019.Models.Tarea>
+
+@{
+    ViewData["Title"] = "ProjectManager";
+}
+
+<h1>ProjectManager</h1>
+
+<p>
+
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Developer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Titulo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Proyecto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Prioridad)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fecha)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Developer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Titulo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Proyecto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Prioridad)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fecha)
+                </td>
+
+                <td>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

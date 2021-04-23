@@ -1,5 +1,6 @@
 ﻿@model LAB4_1203819_2530019.Models.Tarea
 
+
 @{
     ViewData["Title"] = "Create";
 }
@@ -13,44 +14,33 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Developer" class="control-label"></label>
-                <input asp-for="Developer" class="form-control" />
-                <span asp-validation-for="Developer" class="text-danger"></span>
+                <p style="color:blue">Developer: </p>
+                @Html.DisplayFor(model => model.Developer)
             </div>
             <div class="form-group">
                 <label asp-for="Titulo" class="control-label"></label>
-                <input asp-for="Titulo" class="form-control" />
+                <input asp-for="Titulo" class="form-control" required />
                 <span asp-validation-for="Titulo" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Descripcion" class="control-label"></label>
-                <input asp-for="Descripcion" class="form-control" />
+                <input asp-for="Descripcion" class="form-control" required />
                 <span asp-validation-for="Descripcion" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Proyecto" class="control-label"></label>
-                <input asp-for="Proyecto" class="form-control" />
+                <input asp-for="Proyecto" class="form-control" required />
                 <span asp-validation-for="Proyecto" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Prioridad" class="control-label"></label>
-                <input asp-for="Prioridad" class="form-control" />
+                <label asp-for="Prioridad" class="control-label">Prioridad:Maximo de 10 y minimo 1</label>
+                <input asp-for="Prioridad" class="form-control" required max="10" min="1" />
                 <span asp-validation-for="Prioridad" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Dia" class="control-label"></label>
-                <input asp-for="Dia" class="form-control" />
-                <span asp-validation-for="Dia" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Mes" class="control-label"></label>
-                <input asp-for="Mes" class="form-control" />
-                <span asp-validation-for="Mes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Año" class="control-label"></label>
-                <input asp-for="Año" class="form-control" />
-                <span asp-validation-for="Año" class="text-danger"></span>
+                <label asp-for="Fecha" class="control-label"></label>
+                <input asp-for="Fecha" type="date" min="2021-04-01" max="2030-12-31" step="1">
+                <span asp-validation-for="Fecha" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -60,9 +50,6 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Developer" asp-route-id="-1">Regresar</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

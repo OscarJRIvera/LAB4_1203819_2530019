@@ -1,6 +1,4 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@{ ViewData["Title"] = "Home Page"; }
 
 <div class="text-center">
 
@@ -9,9 +7,7 @@
 
 
 </div>
-<p>Seleccione el link del tipo de Usuario que desea utilizar </p>
-
- @Html.ActionLink("!Developer!", "OptionList", new { id = 0 })
-
-@Html.ActionLink("!Project mananger!", "OptionList", new { id = 1 })
+<a asp-action="OptionList" class="btn btn-light btn-block" role="button">Developer</a>
+<hr />
+<a asp-action="Optionlist2" class="btn btn-light btn-block" role="button">Project Manager</a>
 
