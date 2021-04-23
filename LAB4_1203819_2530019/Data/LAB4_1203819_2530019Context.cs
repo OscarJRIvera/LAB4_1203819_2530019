@@ -9,11 +9,13 @@ namespace LAB4_1203819_2530019.Data
 {
     public class LAB4_1203819_2530019Context : DbContext
     {
-        public LAB4_1203819_2530019Context (DbContextOptions<LAB4_1203819_2530019Context> options)
+        public LAB4_1203819_2530019Context(DbContextOptions<LAB4_1203819_2530019Context> options)
             : base(options)
         {
         }
 
         public DbSet<LAB4_1203819_2530019.Models.Tarea> Tarea { get; set; }
+
+        public DbSet<LAB4_1203819_2530019.Models.Developer> Developer { get; set; }
     }
 }

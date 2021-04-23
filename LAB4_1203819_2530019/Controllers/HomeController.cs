@@ -15,6 +15,7 @@ namespace LAB4_1203819_2530019.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly Models.Data.Singleton F = Models.Data.Singleton.Instance;
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -39,13 +40,15 @@ namespace LAB4_1203819_2530019.Controllers
         }
         public IActionResult OptionList(int id)
         {
-            Models.Data.Singleton.Instance.Type = id == 0 ? false : true;
-            if (Models.Data.Singleton.Instance.Type == false)
+            if (F.Developer == null)
             {
-                return RedirectToAction("Developer","Tareas");
+                return RedirectToAction("DeveloperName", "Tareas");
             }
-            return View("index");
-
+            return RedirectToAction("DeveloperChoose", "Tareas");
+        }
+        public IActionResult OptionList2(int id)
+        {
+            return RedirectToAction("ProjectManager", "Tareas");
         }
     }
 }

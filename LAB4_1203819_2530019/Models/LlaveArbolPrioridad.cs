@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace LAB4_1203819_2530019.Models
 {
+    [Serializable]
     public class LlaveArbolPrioridad
     {
         public string CodigoHash { get; set; }

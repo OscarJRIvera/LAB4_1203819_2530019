@@ -4,19 +4,41 @@ using System.Text;
 
 namespace ArbolDePrioridad
 {
-    public class ArbolDePrioridad<T>
+    [Serializable]
+    public class ArbolDePrioridad<T> : ICloneable
     {
+        //public object Clone()
+        //{
+        //    return this.MemberwiseClone();
+        //}
+
+        public ArbolDePrioridad<T> Clone()
+        {
+            return new ArbolDePrioridad<T>(this);
+        }
+        object ICloneable.Clone()
+        {
+            return Clone();
+        }
+        public ArbolDePrioridad(ArbolDePrioridad<T> a)
+        {
+            this.root = a.root.Clone();
+            this.comparador = a.comparador;
+            this.Comprobacion = a.Comprobacion;
+            this.CantidadNodos = a.CantidadNodos;
+            this.Ordenado = a.Ordenado;
+        }
         public delegate int Comparador<T>(T a, T b);
         public ArbolDePrioridad(Comparador<T> Funcomparador) //Esta es la funcion
         {
             this.comparador = Funcomparador; // el apuntador de la linea 12 que apunte a la funcion. 
         }
-        internal Nodo<T> root;
-        bool Ordenado;
-        internal Comparador<T> comparador;
+        Nodo<T> root = new Nodo<T>();
 
+        internal Comparador<T> comparador;
+        bool Ordenado;
         bool Comprobacion;
-        int CantidadNodos;
+        int CantidadNodos = 0;
         public bool isempty()
         {
             if (root == null)
@@ -36,7 +58,7 @@ namespace ArbolDePrioridad
                 root = new Nodo<T>();
                 root.Value = dato;
                 root.Left = new Nodo<T>();
-                root.Right= new Nodo<T>();
+                root.Right = new Nodo<T>();
             }
             else
             {
@@ -44,7 +66,7 @@ namespace ArbolDePrioridad
                 add2(dato, root);
             }
             CantidadNodos++;
-            int lol = 69;
+
         }
         private void add2(T dato, Nodo<T> CurrentRoot)
         {
@@ -56,7 +78,8 @@ namespace ArbolDePrioridad
                 CurrentRoot.Left = new Nodo<T>();
                 CurrentRoot.Right = new Nodo<T>();
             }
-            else if (CurrentRoot.Left.Value != null && CurrentRoot.Right.Value != null) {
+            else if (CurrentRoot.Left.Value != null && CurrentRoot.Right.Value != null)
+            {
                 add2(dato, CurrentRoot.Left);
                 if (Comprobacion == false)
                 {
@@ -88,8 +111,8 @@ namespace ArbolDePrioridad
             {
                 Nodo<T> Temp = new Nodo<T>();
                 Temp.Value = CurrentRoot.Value;
-               
-                
+
+
                 if (CurrentRoot.Left.Value != null)
                 {
                     if (comparador.Invoke(CurrentRoot.Left.Value, CurrentRoot.Value) == -1)
@@ -118,34 +141,39 @@ namespace ArbolDePrioridad
         }
         public T Remove()
         {
-            Nodo<T> Temp;
-            Temp = root;
-            if (root.Left == null)
+            Nodo<T> Temp = new Nodo<T>();
+            Temp.Value = root.Value;
+            if (root.Left.Value == null)
             {
                 root = null;
             }
             else
             {
-                Remove2(Temp);
+                Remove2(root);
+            }
+            if (root == null)
+            {
+                return Temp.Value;
             }
             OrdenarEliminacion(root);
             CantidadNodos--;
             return Temp.Value;
 
         }
-        public void Remove2(Nodo<T> CurrentRoot)
+        private void Remove2(Nodo<T> CurrentRoot)
         {
+
             if (CurrentRoot.EsHoja)
             {
                 root.Value = CurrentRoot.Value;
-                CurrentRoot = null;
+                CurrentRoot.Value = default(T);
             }
             else
             {
-                int Cant = CantidadNodos;
+                double Cant = CantidadNodos;
                 double nivel1 = Math.Truncate(Math.Log2(CurrentRoot.Pos + 1));
                 double nivel2 = Math.Truncate(Math.Log2(CantidadNodos + 1));
-                for (int i = Convert.ToInt32(nivel1); i < nivel2; nivel2++)
+                for (int i = Convert.ToInt32(nivel1); i < nivel2; i++)
                 {
                     Cant = Cant / 2;
                 }
@@ -164,27 +192,44 @@ namespace ArbolDePrioridad
             if (CurrentRoot.TieneDosHijos)
             {
                 int i = comparador.Invoke(CurrentRoot.Left.Value, CurrentRoot.Right.Value);
-                if (i == 1)
+                if (i != 1)
                 {
-                    Nodo<T> temp = CurrentRoot;
-                    CurrentRoot.Value = CurrentRoot.Left.Value;
-                    CurrentRoot.Left.Value = temp.Value;
-                    OrdenarEliminacion(CurrentRoot.Left);
+                    int i2 = comparador.Invoke(CurrentRoot.Value, CurrentRoot.Left.Value);
+                    if (i2 == 1)
+                    {
+                        Nodo<T> temp = new Nodo<T>();
+                        temp.Value = CurrentRoot.Value;
+                        CurrentRoot.Value = CurrentRoot.Left.Value;
+                        CurrentRoot.Left.Value = temp.Value;
+                        OrdenarEliminacion(CurrentRoot.Left);
+                    }
+
                 }
                 else
                 {
-                    Nodo<T> temp = CurrentRoot;
-                    CurrentRoot.Value = CurrentRoot.Right.Value;
-                    CurrentRoot.Right.Value = temp.Value;
-                    OrdenarEliminacion(CurrentRoot.Right);
+                    int i2 = comparador.Invoke(CurrentRoot.Value, CurrentRoot.Right.Value);
+                    if (i2 == 1)
+                    {
+                        Nodo<T> temp = new Nodo<T>();
+                        temp.Value = CurrentRoot.Value;
+                        CurrentRoot.Value = CurrentRoot.Right.Value;
+                        CurrentRoot.Right.Value = temp.Value;
+                        OrdenarEliminacion(CurrentRoot.Right);
+                    }
                 }
             }
             else if (!CurrentRoot.EsHoja)
             {
-                Nodo<T> temp = CurrentRoot;
-                CurrentRoot.Value = CurrentRoot.Left.Value;
-                CurrentRoot.Left.Value = temp.Value;
+                int i2 = comparador.Invoke(CurrentRoot.Value, CurrentRoot.Left.Value);
+                if (i2 == 1)
+                {
+                    Nodo<T> temp = new Nodo<T>();
+                    temp.Value = CurrentRoot.Value;
+                    CurrentRoot.Value = CurrentRoot.Left.Value;
+                    CurrentRoot.Left.Value = temp.Value;
+                }
             }
+
 
         }
     }
