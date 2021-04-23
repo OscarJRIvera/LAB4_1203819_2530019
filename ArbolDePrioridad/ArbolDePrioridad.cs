@@ -45,6 +45,10 @@ namespace ArbolDePrioridad
             {
                 return true;
             }
+            else if (root.Value == null)
+            {
+                return true;
+            }
             return false;
         }
         public T Peek()
@@ -55,6 +59,7 @@ namespace ArbolDePrioridad
         {
             if (root == null)
             {
+                CantidadNodos = 0;
                 root = new Nodo<T>();
                 root.Value = dato;
                 root.Left = new Nodo<T>();
@@ -120,22 +125,16 @@ namespace ArbolDePrioridad
                         CurrentRoot.Value = CurrentRoot.Left.Value;
                         CurrentRoot.Left.Value = Temp.Value;
                     }
-                    else
-                    {
-                        Ordenado = false;
-                    }
+
                 }
-                else if (CurrentRoot.Right.Value != null)
+                if (CurrentRoot.Right.Value != null)
                 {
                     if (comparador.Invoke(CurrentRoot.Right.Value, CurrentRoot.Value) == -1)
                     {
                         CurrentRoot.Value = CurrentRoot.Right.Value;
                         CurrentRoot.Right.Value = Temp.Value;
                     }
-                    else
-                    {
-                        Ordenado = false;
-                    }
+
                 }
             }
         }
@@ -143,7 +142,11 @@ namespace ArbolDePrioridad
         {
             Nodo<T> Temp = new Nodo<T>();
             Temp.Value = root.Value;
-            if (root.Left.Value == null)
+            if (root.Left == null)
+            {
+                root = null;
+            }
+            else if (root.Left.Value == null)
             {
                 root = null;
             }

@@ -25,6 +25,7 @@ namespace TablaHash
         }
         DoubleLinkedList<LlaveValor<V>> Diccionario;
 
+
         public TablaHash(int count, Comparador<V> Funcomparador) //se inicializa el diccionario con una cantidad fija de elementos
         {
 
