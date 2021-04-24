@@ -9,6 +9,8 @@ using LAB4_1203819_2530019.Data;
 using LAB4_1203819_2530019.Models;
 using DoubleLinkedListLibrary1;
 using ArbolDePrioridad;
+using Microsoft.VisualBasic.FileIO;
+using System.IO;
 
 
 namespace LAB4_1203819_2530019.Controllers
@@ -31,33 +33,11 @@ namespace LAB4_1203819_2530019.Controllers
         {
             return View(await _context.Tarea.ToListAsync());
         }
-
-        // GET: Tareas/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var tarea = await _context.Tarea
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (tarea == null)
-            {
-                return NotFound();
-            }
-
-            return View(tarea);
-        }
-
-        // GET: Tareas/Create
         public IActionResult Create()
         {
             return View(Temptarea);
         }
-        // POST: Tareas/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+       
         public delegate int TareaD(Developer a, string b);
         public delegate int TareaD2(Tarea a, string b);
         public delegate int TareaD3(LlaveArbolPrioridad a, LlaveArbolPrioridad b);
@@ -78,96 +58,57 @@ namespace LAB4_1203819_2530019.Controllers
             Temp.Tarea.add(ArbolModel);
             F.Tareas.replace(Temp, posicion);
             F.Tabla_Hash.Add(Tarea.Titulo, Tarea);
+            string mydocs = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string folder = "LAB04";
+            string R = mydocs + '\\' + folder;
+
+            Escribir(R + "\\Dev.txt", EscribirDatos());
             return RedirectToAction("Developer");
         }
-        // GET: Tareas/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public void Escribir(string Archivo, string Texto)
         {
-            if (id == null)
+            using (StreamWriter Esc = new StreamWriter(Archivo, false))
             {
-                return NotFound();
+                Esc.WriteAsync(Texto);
+                Esc.Flush();
             }
-
-            var tarea = await _context.Tarea.FindAsync(id);
-            if (tarea == null)
-            {
-                return NotFound();
-            }
-            return View(tarea);
         }
-
-        // POST: Tareas/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Developer,Titulo,Descripcion,Proyecto,Prioridad,Dia,Mes,Año")] Tarea tarea)
+        // Persistir informacion de los developers
+        public string EscribirDatos()
         {
-            if (id != tarea.Id)
+            string st = "";
+            for (int i = 1; i <= F.Tareas.Count2(); i++)
             {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                var TempListaDev = new DoubleLinkedList<Developer>();
+                TempListaDev = F.Tareas.Clone() as DoubleLinkedList<Developer>;
+                var Temp = new Developer();
+                Temp = TempListaDev.GetbyIndex(i);
+                st = st + Temp.Id + "," + Temp.Name + "\n";
+                var Temp2 = new ArbolDePrioridad<LlaveArbolPrioridad>(LlaveArbolPrioridad.Compare_Llave_Arbol);
+                Temp2 = Temp.Tarea.Clone();
+                while (!Temp2.isempty())
                 {
-                    _context.Update(tarea);
-                    await _context.SaveChangesAsync();
+                    var Temp3 = new LlaveArbolPrioridad();
+                    Temp3 = Temp2.Remove();
+                    st = st + Temp3.CodigoHash + "," + Temp3.Prioridad + "\n";
                 }
-                catch (DbUpdateConcurrencyException)
+            }
+            return st;
+        }
+        // Persistir informacion del hash
+        public string EscribirDatos2()
+        {
+            string st = "";
+            for (int i = 0; i < F.Tabla_Hash.getsize(); i++)
+            {
+                for (int f = 0; f < F.Tabla_Hash.BuscarCanti(i); i++)
                 {
-                    if (!TareaExists(tarea.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View();
-        }
-
-        // GET: Tareas/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var tarea = await _context.Tarea
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (tarea == null)
-            {
-                return NotFound();
-            }
-
-            return View(tarea);
-        }
-
-        // POST: Tareas/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var tarea = await _context.Tarea.FindAsync(id);
-            _context.Tarea.Remove(tarea);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool TareaExists(int id)
-        {
-            return _context.Tarea.Any(e => e.Id == id);
-        }
-        public void CambiarDeveloper()
-        {
-
-        }
+            return st;
+        } 
+       
         public IActionResult Developer(int id)
         {
             int tempid = F.actualid;
@@ -219,6 +160,7 @@ namespace LAB4_1203819_2530019.Controllers
             }
             LlaveArbolPrioridad Primer = Temp.Tarea.Peek();
             Tarea Realizar = F.Tabla_Hash.Remove2(Primer.CodigoHash, Primer.CodigoHash);
+            Realizar.Id = F.actualid;
             return View(Realizar);
         }
         public IActionResult DeveloperChoose()
@@ -232,10 +174,15 @@ namespace LAB4_1203819_2530019.Controllers
         [HttpPost]
         public IActionResult DeveloperName([Bind("Developer")] Tarea tarea)
         {
+            TareaD comparador = Tarea.Compare_Titulo2;
+            Developer Temp = F.Tareas.Find(m => comparador(m, tarea.Developer) == 0);
+            if (Temp != null)
+            {
+                return RedirectToAction("ErrorNombre");
+            }
             F.id += 1;
             F.actualid = F.id;
             F.Developer = tarea.Developer;
-
             return RedirectToAction("Developer");
         }
         public IActionResult ErrorNull()
@@ -245,41 +192,32 @@ namespace LAB4_1203819_2530019.Controllers
 
         public IActionResult ProjectManager()
         {
-
             for (int i = 1; i <= 10; i++)
             {
-
-                for (int f = 1; f <= F.Tareas.Count(); f++)
+                for (int f = 1; f <= F.Tareas.Count2(); f++)
                 {
-                    var TempListaDev = new DoubleLinkedList<Developer>();
-                    TempListaDev = F.Tareas.Clone() as DoubleLinkedList<Developer>;
-                    //for (int k = 1; k <= F.Tareas.Count(); k++)
-                    //{
-                    //    Developer d = new Developer();
-
-                    //    d.Id = F.Tareas.GetbyIndex(k).Id;
-                    //    d.Name = F.Tareas.GetbyIndex(k).Name;
-                    //    d.Tarea = F.Tareas.GetbyIndex(k).Tarea;
-                    //    TempListaDev.Add(d);
-                    //}
-
+                   var TempListaDev = new DoubleLinkedList<Developer>();
+                   TempListaDev = F.Tareas.Clone() as DoubleLinkedList<Developer>;
 
                     var Temp = new Developer();
                     Temp = TempListaDev.GetbyIndex(f);
                     var Temp2 = new ArbolDePrioridad<LlaveArbolPrioridad>(LlaveArbolPrioridad.Compare_Llave_Arbol);
-                    Temp2 = Temp.Tarea.Clone();
-                    while (!Temp2.isempty())
+                    if (!Temp.Tarea.isempty())
                     {
-
-                        var Temp3 = new LlaveArbolPrioridad();
-                        Temp3 = Temp2.Remove();
-                        var Temp4 = new Tarea();
-                        Temp4 = F.Tabla_Hash.Remove2(Temp3.CodigoHash, Temp3.CodigoHash);
-                        if (Temp4.Prioridad == i)
+                        Temp2 = Temp.Tarea.Clone();
+                        while (!Temp2.isempty())
                         {
-                            Viewlista.Add(Temp4);
+                            var Temp3 = new LlaveArbolPrioridad();
+                            Temp3 = Temp2.Remove();
+                            var Temp4 = new Tarea();
+                            Temp4 = F.Tabla_Hash.Remove2(Temp3.CodigoHash, Temp3.CodigoHash);
+                            if (Temp4.Prioridad == i)
+                            {
+                                Viewlista.Add(Temp4);
+                            }
                         }
                     }
+                    
                 }
             }
 
@@ -290,5 +228,26 @@ namespace LAB4_1203819_2530019.Controllers
         {
             return View();
         }
+        public IActionResult ErrorNombre()
+        {
+            return View();
+        }
+        public IActionResult EliminarDeveloper(int id)
+        {
+            var TempListaDev = new DoubleLinkedList<Developer>();
+            TempListaDev = F.Tareas.Clone() as DoubleLinkedList<Developer>;
+            var Temp = new Developer();
+            Temp = TempListaDev.GetbyIndex(id);
+            var Temp2 = new ArbolDePrioridad<LlaveArbolPrioridad>(LlaveArbolPrioridad.Compare_Llave_Arbol);
+            Temp2 = Temp.Tarea.Clone();
+            var Temp3 = new LlaveArbolPrioridad();
+            Temp3 = Temp2.Remove();
+            F.Tabla_Hash.Remove(Temp3.CodigoHash, Temp3.CodigoHash);
+            var TempListaDev2 = F.Tareas;
+            var TempB= TempListaDev2.GetbyIndex(id);
+            TempB.Tarea.Remove();
+            return RedirectToAction("Developer");
+        }
+        
     }
 }

@@ -42,6 +42,21 @@ namespace ArbolDePrioridad
         {
             get
             {
+                if (Left == null && Right == null)
+                {
+                    return true;
+                }
+                else if(Left==null || Right == null)
+                {
+                    if (Left == null)
+                    {
+                        return Left is null && Right.Value is null;
+                    }
+                    else
+                    {
+                        return Left.Value is null && Right is null;
+                    }
+                }
                 return Left.Value is null && Right.Value is null;
             }
             set

@@ -14,5 +14,6 @@ namespace LAB4_1203819_2530019.Models
         public string Name { get; set; }
         public ArbolDePrioridad<LlaveArbolPrioridad> Tarea = new ArbolDePrioridad<LlaveArbolPrioridad>(LlaveArbolPrioridad.Compare_Llave_Arbol);
 
+
     }
 }

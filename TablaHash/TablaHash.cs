@@ -24,6 +24,7 @@ namespace TablaHash
             return llave.GetHashCode() % largoTabla;
         }
         DoubleLinkedList<LlaveValor<V>> Diccionario;
+       
 
         public TablaHash(int count, Comparador<V> Funcomparador) //se inicializa el diccionario con una cantidad fija de elementos
         {
@@ -63,6 +64,22 @@ namespace TablaHash
             //busca la posición en la que se va a agregar
             var I = llaveValor.Valor.Find(m => comparador(m, Titulo) == 0);
             return I;
+        }
+        public V Remove3(int posi,int posi2)
+        {
+            var llaveValor = Diccionario.Find(p => p.Llave.Equals(posi));
+            var I = llaveValor.Valor.RemoveAt2(posi2);
+            return I;
+        }
+        public int BuscarCanti(int posi)
+        {
+            var llaveValor = Diccionario.Find(p => p.Llave.Equals(posi));
+            var I = llaveValor.Valor.Count2();
+            return I;
+        }
+        public int getsize()
+        {
+            return largoTabla;
         }
     }
 }

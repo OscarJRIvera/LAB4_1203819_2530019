@@ -97,6 +97,7 @@ namespace DoubleLinkedListLibrary1
                 if (start.next == null)
                 {
                     start = start.next;
+                    end = null;
                     eleminados++;
                 }
                 else
