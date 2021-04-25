@@ -36,7 +36,9 @@ namespace ArbolDePrioridad
             //this.TieneDosHijos = n.TieneDosHijos;
             //this.EsHoja = n.EsHoja;
         }
-         public bool EsHoja
+
+
+        public bool EsHoja
         {
             get
             {
@@ -44,7 +46,7 @@ namespace ArbolDePrioridad
                 {
                     return true;
                 }
-                else if(Left==null || Right == null)
+                else if (Left == null || Right == null)
                 {
                     if (Left == null)
                     {

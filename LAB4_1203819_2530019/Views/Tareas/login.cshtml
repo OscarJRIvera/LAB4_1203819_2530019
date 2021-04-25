@@ -1,0 +1,37 @@
+﻿@model LAB4_1203819_2530019.Models.Login
+
+@{
+    ViewData["Title"] = "login";
+}
+
+<h1 style="color:orange">login</h1>
+
+<h4 style="color:darkred">Usuario: Ing.Miguel</h4>
+<h4 style="color:darkred">Contraseña: Devele1</h4>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Login">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Usuario" class="control-label"></label>
+                <input asp-for="Usuario" class="form-control" required />
+                <span asp-validation-for="Usuario" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Contreseña" class="control-label"></label>
+                <input asp-for="Contreseña" class="form-control" required />
+                <span asp-validation-for="Contreseña" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Login" class="btn btn-outline-warning" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="Home" asp-action="Index">Regresar a la pagina principal</a>
+</div>
+
