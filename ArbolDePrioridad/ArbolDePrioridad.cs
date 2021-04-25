@@ -57,20 +57,31 @@ namespace ArbolDePrioridad
         }
         public void add(T dato)
         {
+            CantidadNodos++;
             if (root == null)
             {
-                CantidadNodos = 0;
                 root = new Nodo<T>();
                 root.Value = dato;
                 root.Left = new Nodo<T>();
                 root.Right = new Nodo<T>();
+                root.Pos = 1;
+            }
+            else if (root.Value == null)
+            {
+
+                root = new Nodo<T>();
+                root.Value = dato;
+                root.Left = new Nodo<T>();
+                root.Right = new Nodo<T>();
+                root.Pos = 1;
+
             }
             else
             {
                 Comprobacion = false;
                 add2(dato, root);
             }
-            CantidadNodos++;
+
 
         }
         private void add2(T dato, Nodo<T> CurrentRoot)
@@ -110,7 +121,7 @@ namespace ArbolDePrioridad
             }
             ComprobarOrden(CurrentRoot);
         }
-          public void ComprobarOrden(Nodo<T> CurrentRoot)
+        public void ComprobarOrden(Nodo<T> CurrentRoot)
         {
             if (CurrentRoot.Left.Value != null || CurrentRoot.Right.Value != null)
             {
@@ -125,7 +136,7 @@ namespace ArbolDePrioridad
                         CurrentRoot.Value = CurrentRoot.Left.Value;
                         CurrentRoot.Left.Value = Temp.Value;
                     }
-                    
+
                 }
                 if (CurrentRoot.Right.Value != null)
                 {
@@ -134,15 +145,15 @@ namespace ArbolDePrioridad
                         CurrentRoot.Value = CurrentRoot.Right.Value;
                         CurrentRoot.Right.Value = Temp.Value;
                     }
-                   
+
                 }
             }
         }
-     public T Remove()
+        public T Remove()
         {
             Nodo<T> Temp = new Nodo<T>();
             Temp.Value = root.Value;
-            if (root.Left==null)
+            if (root.Left == null)
             {
                 root = null;
             }
@@ -174,13 +185,14 @@ namespace ArbolDePrioridad
             else
             {
                 double Cant = CantidadNodos;
-                double nivel1 = Math.Truncate(Math.Log2(CurrentRoot.Pos + 1));
-                double nivel2 = Math.Truncate(Math.Log2(CantidadNodos + 1));
+                double nivel1 = Math.Truncate(Math.Log2(CurrentRoot.Pos)) + 1;
+                double nivel2 = Math.Truncate(Math.Log2(CantidadNodos));
                 for (int i = Convert.ToInt32(nivel1); i < nivel2; i++)
                 {
                     Cant = Cant / 2;
                 }
-                if (Cant % 1 == 0)
+                int cant2 = Convert.ToInt32(Math.Truncate(Cant));
+                if (cant2 == (CurrentRoot.Left.Pos))
                 {
                     Remove2(CurrentRoot.Left);
                 }

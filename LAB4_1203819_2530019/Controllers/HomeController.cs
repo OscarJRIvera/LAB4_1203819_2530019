@@ -48,7 +48,7 @@ namespace LAB4_1203819_2530019.Controllers
         }
         public IActionResult OptionList2(int id)
         {
-            return RedirectToAction("ProjectManager", "Tareas");
+            return RedirectToAction("login", "Tareas");
         }
     }
 }

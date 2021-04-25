@@ -14,17 +14,25 @@ namespace TablaHash
             if (llave is String)
             {
                 byte[] bytes = Encoding.UTF8.GetBytes(llave.ToString());
-                long contador = 0;
-                foreach (var item in bytes)
+                long contador = 1;
+                long contador2 = 2;
+                long x = 0;
+
+                for (int i = 0; i < bytes.Length; i++)
                 {
-                    contador += Convert.ToInt64(item);
+                    if (bytes[i] % 2 == 0)
+                    {
+                        contador += Convert.ToInt64(bytes[i]);
+                    }
+                    else
+                        contador2 += Convert.ToInt64(bytes[i]);
                 }
-                return Convert.ToInt32(contador) % largoTabla;
+                x = (contador * bytes.Length) * contador2;
+                return Convert.ToInt32(x) % largoTabla;
             }
             return llave.GetHashCode() % largoTabla;
         }
         DoubleLinkedList<LlaveValor<V>> Diccionario;
-       
 
 
         public TablaHash(int count, Comparador<V> Funcomparador) //se inicializa el diccionario con una cantidad fija de elementos
@@ -66,7 +74,7 @@ namespace TablaHash
             var I = llaveValor.Valor.Find(m => comparador(m, Titulo) == 0);
             return I;
         }
-        public V Remove3(int posi,int posi2)
+        public V Remove3(int posi, int posi2)
         {
             var llaveValor = Diccionario.Find(p => p.Llave.Equals(posi));
             var I = llaveValor.Valor.RemoveAt2(posi2);
