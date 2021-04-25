@@ -20,7 +20,6 @@ namespace LAB4_1203819_2530019.Models.Data
         }
 
         private readonly static Singleton _instance = new Singleton();
-        public bool? Type;
         public bool? ActionDeveloper;
         public TablaHash<string, Tarea> Tabla_Hash;
         public string Developer;
@@ -30,7 +29,20 @@ namespace LAB4_1203819_2530019.Models.Data
 
         public Singleton()
         {
-
+            string  Deve = "\\Dev.txt";
+            string Tabla = "\\Tabla.txt";
+            if (!Directory.Exists(GetFolder()))
+            {
+                Directory.CreateDirectory(GetFolder());
+            }
+            if (!File.Exists(GetFolder() + Deve))
+            {
+                File.Create(GetFolder() + Deve);
+            }
+            if (!File.Exists(GetFolder() + Tabla))
+            {
+                File.Create(GetFolder() + Tabla);
+            }
             Tabla_Hash = new TablaHash<String, Tarea>(20, Tarea.Compare_Titulo);
             Tareas = new DoubleLinkedList<Developer>();
         }

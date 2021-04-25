@@ -110,7 +110,7 @@ namespace ArbolDePrioridad
             }
             ComprobarOrden(CurrentRoot);
         }
-        public void ComprobarOrden(Nodo<T> CurrentRoot)
+          public void ComprobarOrden(Nodo<T> CurrentRoot)
         {
             if (CurrentRoot.Left.Value != null || CurrentRoot.Right.Value != null)
             {
@@ -125,7 +125,7 @@ namespace ArbolDePrioridad
                         CurrentRoot.Value = CurrentRoot.Left.Value;
                         CurrentRoot.Left.Value = Temp.Value;
                     }
-
+                    
                 }
                 if (CurrentRoot.Right.Value != null)
                 {
@@ -134,15 +134,15 @@ namespace ArbolDePrioridad
                         CurrentRoot.Value = CurrentRoot.Right.Value;
                         CurrentRoot.Right.Value = Temp.Value;
                     }
-
+                   
                 }
             }
         }
-        public T Remove()
+     public T Remove()
         {
             Nodo<T> Temp = new Nodo<T>();
             Temp.Value = root.Value;
-            if (root.Left == null)
+            if (root.Left==null)
             {
                 root = null;
             }
