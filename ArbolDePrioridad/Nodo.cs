@@ -36,9 +36,7 @@ namespace ArbolDePrioridad
             //this.TieneDosHijos = n.TieneDosHijos;
             //this.EsHoja = n.EsHoja;
         }
-
-
-        public bool EsHoja
+         public bool EsHoja
         {
             get
             {

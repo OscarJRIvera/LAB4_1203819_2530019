@@ -110,7 +110,7 @@ namespace ArbolDePrioridad
             }
             ComprobarOrden(CurrentRoot);
         }
-        public void ComprobarOrden(Nodo<T> CurrentRoot)
+          public void ComprobarOrden(Nodo<T> CurrentRoot)
         {
             if (CurrentRoot.Left.Value != null || CurrentRoot.Right.Value != null)
             {
@@ -138,7 +138,7 @@ namespace ArbolDePrioridad
                 }
             }
         }
-        public T Remove()
+     public T Remove()
         {
             Nodo<T> Temp = new Nodo<T>();
             Temp.Value = root.Value;

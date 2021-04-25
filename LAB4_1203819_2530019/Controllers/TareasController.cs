@@ -189,7 +189,6 @@ namespace LAB4_1203819_2530019.Controllers
         {
             return View();
         }
-
         public IActionResult ProjectManager()
         {
             for (int i = 1; i <= 10; i++)
@@ -224,30 +223,5 @@ namespace LAB4_1203819_2530019.Controllers
 
             return View(Viewlista);
         }
-        public IActionResult ErrorTitulo()
-        {
-            return View();
-        }
-        public IActionResult ErrorNombre()
-        {
-            return View();
-        }
-        public IActionResult EliminarDeveloper(int id)
-        {
-            var TempListaDev = new DoubleLinkedList<Developer>();
-            TempListaDev = F.Tareas.Clone() as DoubleLinkedList<Developer>;
-            var Temp = new Developer();
-            Temp = TempListaDev.GetbyIndex(id);
-            var Temp2 = new ArbolDePrioridad<LlaveArbolPrioridad>(LlaveArbolPrioridad.Compare_Llave_Arbol);
-            Temp2 = Temp.Tarea.Clone();
-            var Temp3 = new LlaveArbolPrioridad();
-            Temp3 = Temp2.Remove();
-            F.Tabla_Hash.Remove(Temp3.CodigoHash, Temp3.CodigoHash);
-            var TempListaDev2 = F.Tareas;
-            var TempB= TempListaDev2.GetbyIndex(id);
-            TempB.Tarea.Remove();
-            return RedirectToAction("Developer");
-        }
-        
     }
 }
